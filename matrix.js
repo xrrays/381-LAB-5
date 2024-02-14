@@ -26,7 +26,7 @@ const createMatrix = (title, containerId, rows, cols) => {
 
 const showResult = (title, containerId, rows, cols, dataArray) => {
     let container = document.getElementById(containerId);
-    container.innerHTML = ''; // Clear previous content
+    container.innerHTML = null; // Clear previous content
     let table = document.createElement('table');
 
     for (let i = 0; i < rows; i++) {
@@ -51,9 +51,28 @@ const showResult = (title, containerId, rows, cols, dataArray) => {
 };
 
 const showResult2D = (title, containerId, dataArray) => {
-	// dataArray is a 2D array
-	// complete this function based on the showResult function
-}
+
+    let container = document.getElementById(matrix3);
+    container.innerHTML = ''; // Clear previous content
+    let table = document.createElement('table');
+
+    for (let i = 0; i < dataArray.length; i++) {
+        let tr = document.createElement('tr');
+        
+        for (let j = 0; j < dataArray[i].length; j++) {
+            let td = document.createElement('td');
+            let span = document.createElement('span');
+            span.innerHTML = dataArray[i][j];
+            td.appendChild(span);
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    let caption = table.createCaption();
+    caption.textContent = title;
+
+    container.appendChild(table);
+};
 
 function performOperation(operation) {
     let matrix1 = getMatrixData2D('matrix1');
@@ -61,13 +80,22 @@ function performOperation(operation) {
     console.log("1st Matrix",matrix1);
     console.log("2nd Matrix", matrix2);
     console.log("Operation", operation);
-    // Just a test result
-    let result = [1, 2, 3, 4, 5, 6, 7, 8];
-    // Call your matrix calculation functions here
-    // For example: if (operation === 'add') { addMatrices(matrix1, matrix2); }
-	// prints suitable messages for impossible situation
-    showResult('The Result', 'matrix3', 2, 4, result); // use suitable function for printing results
+    
+    let resultMatrix = [];
+    if (operation === 'add') {
+        resultMatrix = addMatrices(matrix1, matrix2);
+    } else if (operation === 'subtract') {
+        resultMatrix = subtractMatrices(matrix1, matrix2);
+    } else if (operation === 'multiply') {
+        resultMatrix = multiplyMatrices(matrix1, matrix2);
+    }
+    if (resultMatrix.length > 0) {
+        showResult2D('The Result', 'matrix3', resultMatrix);
+    }
 }
+
+// Rest of your code...
+
 
 const getMatrixData1D = function (matrixId) {
     let matrixData = [];
@@ -100,15 +128,55 @@ const getMatrixData2D = function (matrixId) {
     return matrixData;
 };
 
-
-// Add your matrix calculation functions here
-// The functions must check the posibility of calculation too.
 function addMatrices(matrix1, matrix2){ 
-	// provide the code
+	let sumMatrix = [];
+
+    if(matrix1.lenght !== matrix2.lenght || matrix1[0].lenght !== matrix2[0].lenght){
+        console.error("Matrix Addition Error: Both Matrices must be the same dimensions inorder to conduct additions.")
+        return;
+    }
+
+    for(i = 0; i < matrix1.lenght; i++){
+        let row = []
+        for(j = 0; j < matrix1[i].lenght; j++){
+            let sum = matrix1[i][j] + matrix2[i][j];
+            row.push(sum);
+        }
+        sumMatrix.push(row);
+    }
+
+    showResult2D("The Sum", "matrix 3", sumMatrix);
 }
 const subtractMatrices = function (matrix1, matrix2) { 
-	// provide the code
+	let diffMatrix = [];
+
+    if(matrix1.lenght !== matrix2.lenght || matrix1[0].lenght !== matrix2[0].lenght){
+        console.error("Matrix Addition Error: Both Matrices must be the same dimensions inorder to conduct additions.")
+        return;
+    }
+
+    for(i = 0; i < matrix1.lenght; i++){
+        let row = []
+        for(j = 0; j < matrix1[i].lenght; j++){
+            let diffrence = matrix1[i][j] - matrix2[i][j];
+            row.push(diffrence);
+        }
+        diffMatrix.push(row);
+    }
+
+    showResult2D("The Diffrence", "matrix 3", diffMatrix);
 };
 const multiplyMatrices = (matrix1, matrix2) => { 
-	// provide the code
+    let prodMatix = [];
+
+    for(i = 0; i < matrix1.lenght; i++){
+        let row = [];
+        for(j = 0; j < matrix1[0].lenght; j++){
+            let product = matrix1[i][j] * matrix2[i][j];
+            row.push(product);
+        }
+        prodMatix.push(row);
+    }
+
+    showResult2D("The Product", "matrix 3", prodMatix);
 };

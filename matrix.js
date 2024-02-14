@@ -52,7 +52,7 @@ const showResult = (title, containerId, rows, cols, dataArray) => {
 
 const showResult2D = (title, containerId, dataArray) => {
 
-    let container = document.getElementById(matrix3);
+    let container = document.getElementById(containerId);
     container.innerHTML = ''; // Clear previous content
     let table = document.createElement('table');
 
